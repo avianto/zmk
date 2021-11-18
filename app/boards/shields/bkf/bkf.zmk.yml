@@ -1,0 +1,9 @@
+file_format: "1"
+id: bkf
+name: BKF - Base Kit Forty
+type: shield
+url: https://github.com/drhigsby/bkf
+requires:
+  - pro_micro
+features:
+  - keys
