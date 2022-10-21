@@ -93,9 +93,11 @@ Keyboard scan driver where keys are arranged on a matrix with one GPIO per row a
 
 Definition file: [zmk/app/drivers/kscan/Kconfig](https://github.com/zmkfirmware/zmk/blob/main/app/drivers/kscan/Kconfig)
 
-| Config                            | Type | Description                                      | Default |
-| --------------------------------- | ---- | ------------------------------------------------ | ------- |
-| `CONFIG_ZMK_KSCAN_MATRIX_POLLING` | bool | Poll for key presses instead of using interrupts | n       |
+| Config                                         | Type        | Description                                                               | Default |
+| ---------------------------------------------- | ----------- | ------------------------------------------------------------------------- | ------- |
+| `CONFIG_ZMK_KSCAN_MATRIX_POLLING`              | bool        | Poll for key presses instead of using interrupts                          | n       |
+| `CONFIG_ZMK_KSCAN_MATRIX_WAIT_BEFORE_INPUTS`   | int (ticks) | How long to wait before reading input pins after setting output active    | 0       |
+| `CONFIG_ZMK_KSCAN_MATRIX_WAIT_BETWEEN_OUTPUTS` | int (ticks) | How long to wait between each output to allow previous output to "settle" | 0       |
 
 ### Devicetree
 
@@ -134,8 +136,8 @@ Definition file: [zmk/app/dts/bindings/zmk,kscan-composite.yaml](https://github.
 | Property | Type   | Description                                   | Default |
 | -------- | ------ | --------------------------------------------- | ------- |
 | `label`  | string | Unique label for the node                     |         |
-| `rows`   | int    | The number rows of in the composite matrix    |         |
-| `cols`   | int    | The number columns of in the composite matrix |         |
+| `rows`   | int    | The number of rows in the composite matrix    |         |
+| `cols`   | int    | The number of columns in the composite matrix |         |
 
 The `zmk,kscan-composite` node should have one child node per keyboard scan driver that should be composited. Each child node can have the following properties:
 
@@ -207,8 +209,8 @@ One possible way to do this is a 3x4 matrix where the direct GPIO keys are shift
     kscan0: kscan_composite {
         compatible = "zmk,kscan-composite";
         label = "KSCAN0";
-        rows = <3>;
-        columns = <4>;
+        rows = <4>;
+        columns = <3>;
 
         // Include the matrix driver
         matrix {
@@ -249,8 +251,8 @@ Definition file: [zmk/app/dts/bindings/zmk,kscan-mock.yaml](https://github.com/z
 | `label`        | string | Unique label for the node                     |         |
 | `event-period` | int    | Milliseconds between each generated event     |         |
 | `events`       | array  | List of key events to simulate                |         |
-| `rows`         | int    | The number rows of in the composite matrix    |         |
-| `cols`         | int    | The number columns of in the composite matrix |         |
+| `rows`         | int    | The number of rows in the composite matrix    |         |
+| `cols`         | int    | The number of columns in the composite matrix |         |
 | `exit-after`   | bool   | Exit the program after running all events     | false   |
 
 The `events` array should be defined using the macros from [dt-bindings/zmk/kscan_mock.h](https://github.com/zmkfirmware/zmk/blob/main/app/include/dt-bindings/zmk/kscan_mock.h).
